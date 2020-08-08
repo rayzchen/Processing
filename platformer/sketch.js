@@ -1,11 +1,17 @@
 const w = 800, h = 500;
 
+let text = [
+    // Level 1
+    [
+        ["This is a platformer.", 50, ]
+    ]
+]
 let platforms;
 let walls;
 let ends;
 let x = 100;
 let y = 100;
-let vx = vy = -1000;
+let vx = vy = 0;
 let gravity = 1;
 let size = 25;
 let playerColor;
@@ -31,10 +37,23 @@ function setup() {
         [
             [0, height, width, height + 50],
             [0, -50, width, 0],
+        ],
+        // Level 2
+        [
+            [0, height, width, height + 50],
+            [0, -50, width, 0],
+        ],
+        // Level 3
+        [
+            [0, height, width, height + 50],
+            [0, -50, width, 0],
+            [300, height - 50, 500, height],
         ]
     ];
     ends = [
         // Level 1
+        [width - size - 10, height - size - 10, width - 10, height - 10],
+        [width - size - 10, height - size - 10, width - 10, height - 10],
         [width - size - 10, height - size - 10, width - 10, height - 10],
     ]
 }
@@ -130,6 +149,12 @@ function keepInsideBox() {
     y = constrain(y, walls[1], walls[3]);
 }
 
+function respawn() {
+    x = 100;
+    y = height - size / 2;
+    vx = vy = 0;
+}
+
 function physics() {
     applyGravity();
     touchGround(vy < 0);
@@ -137,11 +162,9 @@ function physics() {
     keepInsideBox();
 
     playerBB = [x - size / 2, y - size / 2, x + size / 2, y + size / 2];
-    if (AABBOverlap(ends[level], playerBB)) print(true);
-
-    if (y > height + 200) {
-        x = y = 100;
-        vx = vy = 0;
+    if (AABBOverlap(ends[level], playerBB)) {
+        level += 1;
+        respawn();
     }
 }
 

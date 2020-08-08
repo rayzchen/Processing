@@ -1,14 +1,10 @@
 const w = 800, h = 500;
 
-let text = [
-    // Level 1
-    [
-        ["This is a platformer.", 50, ]
-    ]
-]
+let levelText;
 let platforms;
 let walls;
 let ends;
+let lava;
 let x = 100;
 let y = 100;
 let vx = vy = 0;
@@ -18,6 +14,7 @@ let playerColor;
 let platformColor;
 let skyColor;
 let endColor;
+let lavaColor;
 let falling = 0;
 let jumpKey = 0;
 let wallJump = 0;
@@ -26,10 +23,11 @@ let level = 0;
 function setup() {
     createCanvas(w, h);
     frameRate(60);
-    playerColor = color(255, 0, 0);
+    playerColor = color(50, 205, 50);
     platformColor = color(0);
-    skyColor = color(0, 128, 255);
+    skyColor = color(0, 200, 255);
     endColor = color(255, 255, 0);
+    lavaColor = color(255, 0, 0);
     noStroke();
     walls = [size / 2, size / 2, width - size / 2, height - size / 2];
     platforms = [
@@ -48,14 +46,54 @@ function setup() {
             [0, height, width, height + 50],
             [0, -50, width, 0],
             [300, height - 50, 500, height],
-        ]
+        ],
+        // Level 4
+        [
+            [0, height, width, height + 50],
+            [0, -50, width, 0],
+            [300, height - 50, 500, height],
+        ],
+        // Level 5
+        [
+            [0, height, width, height + 50],
+            [0, -50, width, 0],
+        ],
     ];
     ends = [
         // Level 1
         [width - size - 10, height - size - 10, width - 10, height - 10],
         [width - size - 10, height - size - 10, width - 10, height - 10],
         [width - size - 10, height - size - 10, width - 10, height - 10],
+        [width - size - 10, height - size - 10, width - 10, height - 10],
+        [width - size - 10, height - size - 10, width - 10, height - 10],
     ]
+    levelText = [
+        // Level 1
+        [
+            ["This is a platformer.", 50, width / 2, height / 3],
+            ["<- Arrow keys to move ->", 25, width / 2, height * 2 / 3],
+        ],
+        [
+            ["Kinda boring, eh?", 50, width / 2, height / 3],
+        ],
+        [
+            ["Here's some black thing.", 50, width / 2, height / 3],
+            ["W to jump", 25, width / 2, height * 2 / 3],
+        ],
+        [
+            ["Why are you still playing?", 50, width / 2, height / 3],
+        ],
+        [
+            ["Fine then. Jump in the red!", 50, width / 2, height / 3],
+        ],
+    ];
+    lava = [
+        [],
+        [],
+        [],
+        [],
+        [[300, height - 25, 500, height]],
+    ];
 }
 
 function applyGravity() {
@@ -166,14 +204,31 @@ function physics() {
         level += 1;
         respawn();
     }
+    
+    lava.forEach(function(item) {
+        if (AABBOverlap(lava, playerBB)) respawn();
+    });
 }
 
-function draw_scene() {
+function drawScene() {
     background(skyColor);
+
+    fill(0);
+    textAlign(CENTER);
+    levelText[level].forEach(function(item) {
+        textSize(item[1]);
+        text(item[0], item[2], item[3]);
+    });
 
     fill(platformColor);
     rectMode(CORNERS);
     platforms[level].forEach(function(item) {
+        rect(item[0], item[1], item[2], item[3]);
+    });
+
+    fill(lavaColor);
+    rectMode(CORNERS);
+    lava[level].forEach(function(item) {
         rect(item[0], item[1], item[2], item[3]);
     });
 
@@ -187,5 +242,5 @@ function draw_scene() {
 
 function draw() {
     physics();
-    draw_scene();
+    drawScene();
 }

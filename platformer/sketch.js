@@ -1,19 +1,12 @@
-new p5();
-
-walls = [size / 2, size / 2, width - size / 2, height - size / 2];
-platforms = [
-    // Level 1
-    [
-        [0, height, width, height + 50],
-    ]
-];
-var size = 25;
+var platforms;
+var walls;
 var x = 100;
-var y = height - size / 2;
+var y = 100;
 var vx = vy = 0;
 var gravity = 1;
-var playerColor = color(255, 0, 0);
-var platformColor = color(0);
+var size = 25;
+var playerColor;
+var platformColor;
 var falling = 0;
 var jumpKey = 0;
 var wallJump = 0;
@@ -22,7 +15,16 @@ var level = 0;
 function setup() {
     createCanvas(800, 500);
     frameRate(60);
+    playerColor = color(255, 0, 0);
+    platformColor = color(0);
     noStroke();
+    walls = [size / 2, size / 2, width - size / 2, height - size / 2];
+    platforms = [
+        // Level 1
+        [
+            [0, height, width, height + 50],
+        ]
+    ];
 }
 
 function applyGravity() {

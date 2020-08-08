@@ -1,5 +1,8 @@
+const w = 800, h = 500;
+
 var platforms;
 var walls;
+var ends;
 var x = 100;
 var y = 100;
 var vx = vy = 0;
@@ -7,16 +10,20 @@ var gravity = 1;
 var size = 25;
 var playerColor;
 var platformColor;
+var skyColor;
+var endColor;
 var falling = 0;
 var jumpKey = 0;
 var wallJump = 0;
 var level = 0;
 
 function setup() {
-    createCanvas(800, 500);
+    createCanvas(w, h);
     frameRate(60);
     playerColor = color(255, 0, 0);
     platformColor = color(0);
+    skyColor = color(0, 128, 255);
+    endColor = color(255, 255, 0);
     noStroke();
     walls = [size / 2, size / 2, width - size / 2, height - size / 2];
     platforms = [
@@ -25,6 +32,10 @@ function setup() {
             [0, height, width, height + 50],
         ]
     ];
+    ends = [
+        // Level 1
+        [width - size - 10, height - size - 10, width - 10, height - 10],
+    ]
 }
 
 function applyGravity() {
@@ -123,6 +134,10 @@ function physics() {
     touchGround(vy < 0);
     movement();
     keepInsideBox();
+
+    playerBB = [x - size / 2, y - size / 2, x + size / 2, y + size / 2];
+    if (AABBOverlap(ends[level], playerBB)) print(true);
+
     if (y > height + 200) {
         x = y = 100;
         vx = vy = 0;
@@ -130,16 +145,20 @@ function physics() {
 }
 
 function draw_scene() {
-    background(255);
-    fill(playerColor);
-    rectMode(CENTER);
-    rect(x, y, size, size);
+    background(skyColor);
 
     fill(platformColor);
     rectMode(CORNERS);
     platforms[level].forEach(function(item) {
         rect(item[0], item[1], item[2], item[3]);
     });
+
+    fill(endColor);
+    rect(ends[level][0], ends[level][1], ends[level][2], ends[level][3]);
+    
+    fill(playerColor);
+    rectMode(CENTER);
+    rect(x, y, size, size);
 }
 
 function draw() {

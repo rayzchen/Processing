@@ -1,21 +1,21 @@
 const w = 800, h = 500;
 
-var platforms;
-var walls;
-var ends;
-var x = 100;
-var y = 100;
-var vx = vy = 0;
-var gravity = 1;
-var size = 25;
-var playerColor;
-var platformColor;
-var skyColor;
-var endColor;
-var falling = 0;
-var jumpKey = 0;
-var wallJump = 0;
-var level = 0;
+let platforms;
+let walls;
+let ends;
+let x = 100;
+let y = 100;
+let vx = vy = -1000;
+let gravity = 1;
+let size = 25;
+let playerColor;
+let platformColor;
+let skyColor;
+let endColor;
+let falling = 0;
+let jumpKey = 0;
+let wallJump = 0;
+let level = 0;
 
 function setup() {
     createCanvas(w, h);
@@ -30,6 +30,7 @@ function setup() {
         // Level 1
         [
             [0, height, width, height + 50],
+            [0, -50, width, 0],
         ]
     ];
     ends = [
@@ -55,7 +56,7 @@ function AABBOverlap(a, b) {
 
 function grounded() {
     playerBB = [x - size / 2, y - size / 2, x + size / 2, y + size / 2];
-    var collided = false;
+    let collided = false;
     platforms[level].forEach(function(item) {
         if (AABBOverlap(item, playerBB)) collided = true;
     });
@@ -77,7 +78,7 @@ function touchGround(up) {
 
 function move(speed) {
     x += speed;
-    var slope = 0;
+    let slope = 0;
     while (slope != 8 && grounded()) {
         y += 1;
         slope += 1;

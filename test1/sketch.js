@@ -10,16 +10,16 @@ class Ball {
     }
 }
 
-var _gameScreen = 0;
-var balls = [];
-var ballSize = 20;
-var gravity = 1;
-var airfriction = 0.0001;
-var friction = 0.2;
-var racketColor;
-var racketWidth = 100;
-var racketHeight = 10;
-var ballShadow = 1;
+let _gameScreen = 0;
+let balls = [];
+let ballSize = 20;
+let gravity = 1;
+let airfriction = 0.0001;
+let friction = 0.2;
+let racketColor;
+let racketWidth = 100;
+let racketHeight = 10;
+let ballShadow = 1;
 
 function setup() {
     createCanvas(800, 500);
@@ -34,7 +34,7 @@ function setup() {
 function draw() {
     background(255);
     drawRacket();
-    for (var i = 0; i < balls.length; i++) {
+    for (let i = 0; i < balls.length; i++) {
         ball = balls[i];
         drawBall(ball);
         watchRacketBounce(ball);
@@ -51,11 +51,11 @@ function drawRacket(){
 }
 
 function drawBall(ball) {
-    var position = [ball.ballX, ball.ballY];
+    let position = [ball.ballX, ball.ballY];
     ball.positions.push(position);
     if (ball.positions.length == ballShadow + 1) ball.positions.shift();
-    for (var i = 0; i < ball.positions.length; i++) {
-        var pos = ball.positions[i];
+    for (let i = 0; i < ball.positions.length; i++) {
+        let pos = ball.positions[i];
         fill(red(ball.ballColor), green(ball.ballColor), blue(ball.ballColor), (ballShadow - ball.positions.length + i + 1) * 255 / ballShadow);
         ellipse(pos[0], pos[1], ballSize, ballSize);
     }
@@ -77,7 +77,7 @@ function drawBall(ball) {
 // }
 
 function watchRacketBounce(ball) {
-    var overhead = mouseY - pmouseY;
+    let overhead = mouseY - pmouseY;
     if ((ball.ballX + (ballSize / 2) > mouseX - (racketWidth / 2)) && (ball.ballX - (ballSize / 2) < mouseX + (racketWidth / 2))) {
         if (dist(ball.ballX, ball.ballY, ball.ballX, mouseY - (racketHeight / 2)) <= ballSize / 2 + abs(overhead)) {
             makeBounceBottom(ball, mouseY - (racketHeight / 2));

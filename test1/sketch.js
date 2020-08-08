@@ -20,14 +20,18 @@ let racketColor;
 let racketWidth = 100;
 let racketHeight = 10;
 let ballShadow = 1;
+let numBalls = 1000;
 
 function setup() {
     createCanvas(800, 500);
     frameRate(60);
     racketColor = color(0, 255, 0);
-    balls.push(new Ball(width / 2, height / 5, random(-10, 10), random(-10, 10), color(255, 0, 0), gravity));
-    balls.push(new Ball(width / 2, height / 5, random(-10, 10), random(-10, 10), color(0, 255, 0), gravity));
-    balls.push(new Ball(width / 2, height / 5, random(-10, 10), random(-10, 10), color(0, 0, 255), gravity));
+    // balls.push(new Ball(width / 2, height / 5, random(-10, 10), random(-10, 10), color(255, 0, 0), gravity));
+    // balls.push(new Ball(width / 2, height / 5, random(-10, 10), random(-10, 10), color(0, 255, 0), gravity));
+    // balls.push(new Ball(width / 2, height / 5, random(-10, 10), random(-10, 10), color(0, 0, 255), gravity));
+    for (let i = 0; i < numBalls; i++) {
+        balls.push(new Ball(width / 2, height / 5, random(-10,10), random(-10, 10), color(i / numBalls * 255, 0, (1 - i / numBalls) * 255), gravity));
+    }
     noStroke();
 }
 
